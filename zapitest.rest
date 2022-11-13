@@ -1,0 +1,28 @@
+
+# USER LOGINS TESTING
+GET http://localhost:3000/users
+
+###
+GET http://localhost:3000/users/6371171e967ffcc5492ed3a9
+
+###
+
+POST  http://localhost:3000/users
+Content-Type: application/json
+
+ {
+    "name": "the great",
+    "password": "963"
+ }
+
+###
+PATCH  http://localhost:3000/users/63710fa143596198b8b45474
+Content-Type: application/json
+
+ {
+    "name": "golu",
+    "password": "987564"
+ };
+
+###
+ DELETE    http://localhost:3000/users/63710fa143596198b8b45474
