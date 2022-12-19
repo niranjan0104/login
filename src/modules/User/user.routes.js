@@ -1,12 +1,33 @@
-import express from "express"
-import User from "../../models/User"
+import express from "express";
 import multer from "multer";
-import path from "path"
+import { createValidator } from "express-joi-validation";
+import path from "path";
+import User from "../../models/User";
+import signUpValidate  from "./user.validator";
+import signUpController  from "./user.controller";
 
+const validator = createValidator({
+  passError: true,
+});
 const router= express.Router()
 
+
+router.post(
+   "/signup",
+   validator.body(signUpValidate.signUpSchema),
+   signUpController.userSchema
+)
+
+router.post(
+  "/login",
+  validator.body(signUpValidate.loginSchema),
+  signUpController.loginSchema
+)
+
+
+
+
 const uploadPath = path.join(__dirname, "../public/uploads/");
-// console.log(uploadPath , "This is the absolute path");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, uploadPath);
@@ -28,7 +49,8 @@ router.post("/createuser" ,
     }catch(err){
         console.log("There is a error " ,err)
     }
-})
+});
+
 
 router.get("/createuser",
  async (req, res) => {
