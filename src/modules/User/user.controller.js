@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import User from '../../models/User';
+import jwt from "jsonwebtoken";
 
 class offerController {
 
@@ -41,9 +42,18 @@ async loginSchema (req, res) {
         if( !passMatch ){
         return res.status(400).json({"error": "password is incorrect"})
      };
+    //  const data = user._id;
+     
+     const payload = {
+      user: {
+        id: user._id
+      }
+    };
+     const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET)
 
     return res.status(200).json({
       "message": "signIn successfully",
+      "accessToken": accessToken,
       "user": user
     });
   }catch(e){
@@ -51,6 +61,30 @@ async loginSchema (req, res) {
         error: e.message
       })
   }
+}
+
+async post (req, res){
+  let {body:{full_name, phoneNumber,password, email }} = req;
+  console.log("full_name")
+    try{
+       const user = new User({
+            full_name,
+            phoneNumber,
+            password,
+            email
+       });
+
+      await user.save();
+      return res.status(200).json({
+        "message": "test done",
+        "user": {_id: user._id}
+      });
+    }catch(e){
+        // console.log("o")
+        res.status(500).json({
+          error : e.message
+        })
+    }
 }
 
 }

@@ -5,6 +5,8 @@ import path from "path";
 import User from "../../models/User";
 import signUpValidate  from "./user.validator";
 import signUpController  from "./user.controller";
+import isValidAccessToken from "../../middleware/userAuth"
+
 
 const validator = createValidator({
   passError: true,
@@ -22,6 +24,12 @@ router.post(
   "/login",
   validator.body(signUpValidate.loginSchema),
   signUpController.loginSchema
+);
+
+router.post(
+  "/test",
+  isValidAccessToken,
+  signUpController.post
 )
 
 

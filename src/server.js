@@ -8,6 +8,11 @@ const port = process.env.PORT || 5000;
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
 
+app.get("/", (req, res) => {
+    res.json("hello niranjan")
+});
+
+
 app.use('/users' , UserRoute);
 
 
