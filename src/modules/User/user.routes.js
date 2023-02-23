@@ -7,11 +7,14 @@ import signUpValidate  from "./user.validator";
 import signUpController  from "./user.controller";
 import isValidAccessToken from "../../middleware/userAuth"
 
+// Delete the node_modules directory.
+// Delete the package-lock.json file.
+// Run npm install If this command does not work try the below command.
+// Run npm install --save.
+// Run npm start.
 
-const validator = createValidator({
-  passError: true,
-});
 const router= express.Router()
+const validator = createValidator();
 
 
 router.post(
@@ -27,9 +30,10 @@ router.post(
 );
 
 router.post(
-  "/test",
+  "/postAddress",
   isValidAccessToken,
-  signUpController.post
+  validator.body(signUpValidate.postAddress),
+  signUpController.postAddress
 )
 
 
@@ -60,10 +64,13 @@ router.post("/createuser" ,
 });
 
 
-router.get("/createuser",
+router.get("/createuser/:id",
+validator.params(signUpValidate.getQuery),
  async (req, res) => {
   try{
-    const data = await User.find({}).sort({_id: -1});
+    const {params: {id}} = req;
+    console.log(id)
+    const data = await User.findById(id).sort({_id: -1});
     const count = await User.countDocuments({})
      res.json({message:"list",totalRecord: count, record: data})
 

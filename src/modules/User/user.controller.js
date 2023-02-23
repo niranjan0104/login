@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 class offerController {
 
 async userSchema (req, res) {
+  
     let {body:{full_name, email, password, phoneNumber }} = req;
     try{
        const user = new User({
@@ -63,18 +64,19 @@ async loginSchema (req, res) {
   }
 }
 
-async post (req, res){
-  let {body:{full_name, phoneNumber,password, email }} = req;
-  console.log("full_name")
+async postAddress (req, res){
+  let { body: {full_name, userId, address},
+        user: { id, email}
+      } = req;
+      console.log( id, email )
     try{
        const user = new User({
             full_name,
-            phoneNumber,
-            password,
-            email
+            userId,
+            address
        });
 
-      await user.save();
+      // await user.save();
       return res.status(200).json({
         "message": "test done",
         "user": {_id: user._id}
@@ -85,6 +87,10 @@ async post (req, res){
           error : e.message
         })
     }
+}
+
+async try(req, res){
+  console.log("hello 11try")
 }
 
 }

@@ -1,0 +1,7 @@
+###
+POST http://localhost:3000/users/signup HTTP/5.4
+Content-Type: application/json
+
+{
+    "email": "nk@g.com"
+}
